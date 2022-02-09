@@ -1,0 +1,31 @@
+name: Webhooks
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+  publish:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && 'manual' || '' }}
+    outputs:
+      var-1: ${{ steps.publish.outputs.var-1 }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - id: publish
+        run: |
+          echo "::set-output name=var-1::run-${{ env.GITHUB_JOB }}"
+
