@@ -17,6 +17,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     environment: ${{ github.event_name == 'push' && 'manual' || '' }}
+    needs:
+      - test
     outputs:
       var-1: ${{ steps.publish.outputs.var-1 }}
     steps:
